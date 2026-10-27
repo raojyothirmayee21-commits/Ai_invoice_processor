@@ -1,4 +1,4 @@
-# Invoice Processor
+# AI Invoice Processor
 
 **[▶ Try the live demo](https://invoice-process-demo.streamlit.app/)** · real Claude results on 35 sample invoices, no sign-up needed
 

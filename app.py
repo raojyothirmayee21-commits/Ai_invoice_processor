@@ -69,7 +69,7 @@ if DEMO_MODE:
         "**Demo mode.** These are real Claude results for the 35 sample invoices, processed ahead of time, "
         "so browsing this page makes no API calls. Try the **Review queue**: approve or reject an invoice "
         "and see it in the **Audit log**. Your changes reset when you leave. "
-        "[Code on GitHub](https://github.com/raojyothirmayee21-commits/new-processor)"
+        "[Code on GitHub](https://github.com/raojyothirmayee21-commits/Ai_invoice_processor)"
     )
 elif client is None:
     st.warning("No ANTHROPIC_API_KEY found. Add it to `.env` to process invoices; browsing works without it.")
