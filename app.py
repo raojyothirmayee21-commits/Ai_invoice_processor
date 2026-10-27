@@ -17,7 +17,7 @@ from invoice_processor.config import ROOT, get_client, get_settings
 from invoice_processor.db import Store
 from invoice_processor.pipeline import process_file
 
-st.set_page_config(page_title="AP Invoice Processor", page_icon="🧾", layout="wide")
+st.set_page_config(page_title="AI Invoice Processor", page_icon="🧾", layout="wide")
 settings = get_settings()
 
 STATUS_LABEL = {
@@ -62,7 +62,7 @@ client = client_or_none()
 DEMO_MODE = client is None and DEMO_DB.exists()
 store = demo_store() if DEMO_MODE else shared_store()
 
-st.title("🧾 AP Invoice Processor")
+st.title("🧾 AI Invoice Processor")
 st.caption("Invoices in → PII masked → Claude extracts → code validates → agent routes → humans decide the edge cases.")
 if DEMO_MODE:
     st.info(
