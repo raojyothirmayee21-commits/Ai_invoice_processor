@@ -1,5 +1,7 @@
 # Invoice Processor
 
+**[▶ Try the live demo](https://invoice-process-demo.streamlit.app/)** · real Claude results on 35 sample invoices, no sign-up needed
+
 I'm a data engineer, and most of my work has been moving messy data from one place to another and making sure it's correct when it gets there. I wanted to see what that looks like when an LLM is part of the pipeline, so I picked a problem that every finance team has: vendor invoices.
 
 This project reads invoices (PDFs and scans), pulls out the key fields with Claude, checks the numbers in plain Python, and decides where each invoice should go: straight to payment, to a manager for approval, or to a person for review.
@@ -53,9 +55,9 @@ I evaluate on 35 synthetic invoices where I know the right answer for every fiel
 | Invoices with every field correct | 35 / 35 (100%) |
 | Correct routing | 35 / 35 (100%) |
 | Unsafe auto-approvals | 0 |
-| Avg extraction time per invoice | 2.4 s |
+| Avg extraction time per invoice | 2.2–2.4 s |
 
-That includes the hard cases: both scanned invoices, both prompt-injection attempts, all three duplicates and all three unknown vendors were routed correctly. Models: `claude-sonnet-5-5` for extraction, `claude-haiku-5-5` for routing.
+I got the same result on two separate full runs. That includes the hard cases: both scanned invoices, both prompt-injection attempts, all three duplicates and all three unknown vendors were routed correctly. Models: `claude-sonnet-5-5` for extraction, `claude-haiku-5-5` for routing.
 
 To be honest about what this means: my test invoices are synthetic, so they're cleaner than real ones. 100% here tells me the pipeline and the checks work end to end; it doesn't mean it would be 100% on a real company's invoices. Handwritten notes, multi-page invoices, foreign currencies and really bad phone photos would all push the numbers down, and that's what I'd test next.
 
