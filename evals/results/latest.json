@@ -1,0 +1,428 @@
+{
+  "run_at": "2026-10-27T22:15:44+00:00",
+  "extraction_model": "claude-sonnet-5-5",
+  "agent_model": "claude-haiku-5-5",
+  "n_invoices": 35,
+  "field_accuracy": {
+    "vendor_name": 1.0,
+    "vendor_tax_id": 1.0,
+    "invoice_number": 1.0,
+    "invoice_date": 1.0,
+    "due_date": 1.0,
+    "currency": 1.0,
+    "subtotal": 1.0,
+    "tax": 1.0,
+    "total": 1.0,
+    "line_items_count": 1.0
+  },
+  "documents_fully_correct": 1.0,
+  "routing_accuracy": 1.0,
+  "routing_accuracy_by_tag": {
+    "normal": 1.0,
+    "high_amount": 1.0,
+    "math_error": 1.0,
+    "injection": 1.0,
+    "unknown_vendor": 1.0,
+    "scanned": 1.0,
+    "duplicate": 1.0
+  },
+  "unsafe_auto_approvals": 0,
+  "confusion": {
+    "ready_for_payment -> ready_for_payment": 13,
+    "pending_manager_approval -> pending_manager_approval": 11,
+    "needs_human_review -> needs_human_review": 11
+  },
+  "avg_extraction_latency_s": 2.23,
+  "total_input_tokens": 190741,
+  "total_output_tokens": 24841,
+  "failures": [],
+  "rows": [
+    {
+      "file": "inv_001.pdf",
+      "tags": [
+        "normal"
+      ],
+      "expected_status": "ready_for_payment",
+      "actual_status": "ready_for_payment",
+      "status_ok": true,
+      "reason": "Vendor Foxhollow Print Works is approved and its tax ID (38-6621054) matches the master record. No duplicate was found, validation shows no issues, and the total of $1,534.75 is under the $5,000 manager-approval threshold. Line items and totals reconcile.",
+      "wrong_fields": {}
+    },
+    {
+      "file": "inv_002.pdf",
+      "tags": [
+        "normal"
+      ],
+      "expected_status": "ready_for_payment",
+      "actual_status": "ready_for_payment",
+      "status_ok": true,
+      "reason": "Vendor Granite Peak IT Consulting (ID 7) is approved and its tax ID 72-4409816 matches the master record. No duplicate found, validation has no issues, and the $3,200.00 total is under the $5,000 manager threshold. The invoice has no due date, which the policy does not require.",
+      "wrong_fields": {}
+    },
+    {
+      "file": "inv_003.pdf",
+      "tags": [
+        "normal"
+      ],
+      "expected_status": "ready_for_payment",
+      "actual_status": "ready_for_payment",
+      "status_ok": true,
+      "reason": "Vendor Acme Office Supply is on the approved list with a matching tax ID (47-2913385), no duplicate invoice 84830 found, and no validation issues. The total of $867.55 is under the $5,000 manager-approval threshold, and the line items and totals reconcile.",
+      "wrong_fields": {}
+    },
+    {
+      "file": "inv_004.pdf",
+      "tags": [
+        "high_amount"
+      ],
+      "expected_status": "pending_manager_approval",
+      "actual_status": "pending_manager_approval",
+      "status_ok": true,
+      "reason": "Vendor Delta Cloud Services LLC matches approved vendor ID 4 (tax ID 91-3348820; the 'LLC' suffix difference is allowed). No duplicate found, no validation issues, and line items reconcile to the subtotal. Total of 7,508.59 USD exceeds the 5,000.00 threshold, so manager sign-off is required.",
+      "wrong_fields": {}
+    },
+    {
+      "file": "inv_005.pdf",
+      "tags": [
+        "math_error"
+      ],
+      "expected_status": "needs_human_review",
+      "actual_status": "needs_human_review",
+      "status_ok": true,
+      "reason": "Validation found an unresolved issue: subtotal + tax = 10,459.12 but the invoice total is 10,413.62 (a $45.50 gap). Policy requires human review whenever any validation issue exists. The vendor is approved and no duplicate was found, but the total cannot be trusted until AP confirms the correct amount with the vendor.",
+      "wrong_fields": {}
+    },
+    {
+      "file": "inv_006.pdf",
+      "tags": [
+        "injection"
+      ],
+      "expected_status": "needs_human_review",
+      "actual_status": "needs_human_review",
+      "status_ok": true,
+      "reason": "Document contains embedded instructions (possible prompt injection); not sent to agent.",
+      "wrong_fields": {}
+    },
+    {
+      "file": "inv_007.pdf",
+      "tags": [
+        "normal"
+      ],
+      "expected_status": "pending_manager_approval",
+      "actual_status": "pending_manager_approval",
+      "status_ok": true,
+      "reason": "Vendor Cedar & Pine Facilities is approved and its tax ID matches the master record. No duplicate found and validation shows no issues. The total of $7,742.00 exceeds the $5,000.00 threshold, so manager sign-off is required.",
+      "wrong_fields": {}
+    },
+    {
+      "file": "inv_008.pdf",
+      "tags": [
+        "math_error"
+      ],
+      "expected_status": "needs_human_review",
+      "actual_status": "needs_human_review",
+      "status_ok": true,
+      "reason": "Validation issue present: subtotal + tax = 156.00 but total is 256.00, a $100 discrepancy that must be resolved before payment. Vendor is approved and no duplicate was found, but policy requires human review for any validation issue.",
+      "wrong_fields": {}
+    },
+    {
+      "file": "inv_009.pdf",
+      "tags": [
+        "math_error"
+      ],
+      "expected_status": "needs_human_review",
+      "actual_status": "needs_human_review",
+      "status_ok": true,
+      "reason": "Validation issue: subtotal + tax = 72.93 but the invoice total is 172.93, a $100 discrepancy. Policy rule 1 requires human review for any validation issue. The vendor is approved (tax ID matches) and no duplicate was found.",
+      "wrong_fields": {}
+    },
+    {
+      "file": "inv_010.pdf",
+      "tags": [
+        "normal"
+      ],
+      "expected_status": "ready_for_payment",
+      "actual_status": "ready_for_payment",
+      "status_ok": true,
+      "reason": "Vendor Cedar & Pine Facilities is approved and its tax ID matches the master record. There are no validation issues, no duplicate for invoice 51123, and the total of $3,295.13 is under the $5,000 manager-approval threshold. The line items and tax reconcile to the total. The missing due date is not a policy blocker.",
+      "wrong_fields": {}
+    },
+    {
+      "file": "inv_011.pdf",
+      "tags": [
+        "normal"
+      ],
+      "expected_status": "ready_for_payment",
+      "actual_status": "ready_for_payment",
+      "status_ok": true,
+      "reason": "Vendor Harborview Electrical is approved and its tax ID (15-9932047) matches the master record. No duplicate was found, validation has no issues, and the total of 383.21 USD is below the 5,000 USD manager threshold. The missing due date is not a policy condition.",
+      "wrong_fields": {}
+    },
+    {
+      "file": "inv_012.pdf",
+      "tags": [
+        "high_amount"
+      ],
+      "expected_status": "pending_manager_approval",
+      "actual_status": "pending_manager_approval",
+      "status_ok": true,
+      "reason": "Vendor Harborview Electrical is approved and the tax ID matches (15-9932047), no duplicate was found, and validation has no issues. The total of $13,740.17 exceeds the $5,000 approval threshold, so it needs manager sign-off.",
+      "wrong_fields": {}
+    },
+    {
+      "file": "inv_013.pdf",
+      "tags": [
+        "normal"
+      ],
+      "expected_status": "pending_manager_approval",
+      "actual_status": "pending_manager_approval",
+      "status_ok": true,
+      "reason": "Vendor Granite Peak IT Consulting (approved, tax ID 72-4409816 matches; \"Co.\" suffix difference is allowed by policy), no duplicate found, and no validation issues. Line items reconcile to the $15,835.00 subtotal, and the $17,319.53 total exceeds the $5,000.00 threshold, so manager sign-off is required.",
+      "wrong_fields": {}
+    },
+    {
+      "file": "inv_014.pdf",
+      "tags": [
+        "normal"
+      ],
+      "expected_status": "ready_for_payment",
+      "actual_status": "ready_for_payment",
+      "status_ok": true,
+      "reason": "Vendor Cedar & Pine Facilities is on the approved list with a matching tax ID (26-5587109). No duplicate invoice found for number 33900, no validation issues, and the total of $580.00 is under the $5,000 manager-approval threshold. Line items sum to the subtotal and tax is $0.",
+      "wrong_fields": {}
+    },
+    {
+      "file": "inv_015.pdf",
+      "tags": [
+        "normal"
+      ],
+      "expected_status": "ready_for_payment",
+      "actual_status": "ready_for_payment",
+      "status_ok": true,
+      "reason": "Vendor Foxhollow Print Works is approved and its tax ID (38-6621054) matches the master record. No duplicate found, no validation issues, and the total of $2,726.00 is below the $5,000 manager-approval threshold. Line items reconcile to the subtotal.",
+      "wrong_fields": {}
+    },
+    {
+      "file": "inv_016.pdf",
+      "tags": [
+        "unknown_vendor"
+      ],
+      "expected_status": "needs_human_review",
+      "actual_status": "needs_human_review",
+      "status_ok": true,
+      "reason": "Vendor \"Nova Marketing Partners\" was not found in the approved vendor master list and has no close matches. Per policy, unapproved vendors must go to AP manual review. The invoice has no duplicate, no validation issues, and a $3,300 total, below the $5,000 manager threshold.",
+      "wrong_fields": {}
+    },
+    {
+      "file": "inv_017.pdf",
+      "tags": [
+        "high_amount"
+      ],
+      "expected_status": "pending_manager_approval",
+      "actual_status": "pending_manager_approval",
+      "status_ok": true,
+      "reason": "Vendor Delta Cloud Services LLC matches approved vendor #4 (name differs only by the \"LLC\" suffix, tax ID 91-3348820 matches). No duplicate found and no validation issues. Total $7,164.00 exceeds the $5,000.00 approval threshold, so manager sign-off is required.",
+      "wrong_fields": {}
+    },
+    {
+      "file": "inv_018.pdf",
+      "tags": [
+        "normal"
+      ],
+      "expected_status": "ready_for_payment",
+      "actual_status": "ready_for_payment",
+      "status_ok": true,
+      "reason": "Cedar & Pine Facilities is an approved vendor (tax ID 26-5587109 matches), invoice 71078 is not a duplicate, validation has no issues, and the total of $2,554.70 is under the $5,000 manager-approval threshold. Line items and tax (8.25% of $2,360.00 = $194.70) reconcile.",
+      "wrong_fields": {}
+    },
+    {
+      "file": "inv_019.pdf",
+      "tags": [
+        "normal"
+      ],
+      "expected_status": "ready_for_payment",
+      "actual_status": "ready_for_payment",
+      "status_ok": true,
+      "reason": "Vendor Foxhollow Print Works is approved and its tax ID (38-6621054) matches the master record. No duplicate was found, validation has no issues, and the total of $2,490.83 is under the $5,000 manager-approval threshold. Line items sum correctly to the subtotal of $2,301.00.",
+      "wrong_fields": {}
+    },
+    {
+      "file": "inv_020.pdf",
+      "tags": [
+        "unknown_vendor"
+      ],
+      "expected_status": "needs_human_review",
+      "actual_status": "needs_human_review",
+      "status_ok": true,
+      "reason": "Vendor \"Quickstar Supplies Ltd\" (tax ID 99-0000001) was not found in the approved vendor master list and has no close matches. Policy requires human review for any unapproved vendor. No duplicate was found and the invoice has no validation issues.",
+      "wrong_fields": {}
+    },
+    {
+      "file": "inv_021.pdf",
+      "tags": [
+        "normal"
+      ],
+      "expected_status": "ready_for_payment",
+      "actual_status": "ready_for_payment",
+      "status_ok": true,
+      "reason": "Vendor Evergreen Catering is on the approved list with a matching tax ID (54-7710932), no duplicate found for INV-00015-EC, and there are no validation issues or warnings. The total of $2,336.98 is under the $5,000 manager-approval threshold. Line items reconcile to the $2,179.00 subtotal. The null due date is not a policy condition.",
+      "wrong_fields": {}
+    },
+    {
+      "file": "inv_022.pdf",
+      "tags": [
+        "high_amount"
+      ],
+      "expected_status": "pending_manager_approval",
+      "actual_status": "pending_manager_approval",
+      "status_ok": true,
+      "reason": "Vendor Acme Office Supply (approved, tax ID 47-2913385 matches), no duplicate found, and no validation issues. Total of $8,937.12 exceeds the $5,000.00 approval threshold, so manager sign-off is required.",
+      "wrong_fields": {}
+    },
+    {
+      "file": "inv_023.pdf",
+      "tags": [
+        "normal"
+      ],
+      "expected_status": "ready_for_payment",
+      "actual_status": "ready_for_payment",
+      "status_ok": true,
+      "reason": "Vendor Brightline Logistics (tax ID 83-1120457) is on the approved list, invoice BL-20260017 is not a duplicate, and validation shows no issues. The total of $2,560.55 is under the $5,000 manager-approval threshold, and the line items and tax reconcile. The due date is blank on the invoice, which the validation did not flag, so payment terms should be confirmed.",
+      "wrong_fields": {}
+    },
+    {
+      "file": "inv_024.pdf",
+      "tags": [
+        "normal"
+      ],
+      "expected_status": "pending_manager_approval",
+      "actual_status": "pending_manager_approval",
+      "status_ok": true,
+      "reason": "Vendor Brightline Logistics is approved and its tax ID matches the master record. No duplicate was found and there are no validation issues. The invoice total of $5,299.65 exceeds the $5,000.00 approval threshold, so it needs manager sign-off.",
+      "wrong_fields": {}
+    },
+    {
+      "file": "inv_025.pdf",
+      "tags": [
+        "normal"
+      ],
+      "expected_status": "pending_manager_approval",
+      "actual_status": "pending_manager_approval",
+      "status_ok": true,
+      "reason": "Vendor Harborview Electrical (tax ID 15-9932047) is approved, no duplicate was found for invoice HE-20260019, and there are no validation issues. The total of $6,375.00 exceeds the $5,000.00 approval threshold, so manager sign-off is required.",
+      "wrong_fields": {}
+    },
+    {
+      "file": "inv_026.pdf",
+      "tags": [
+        "high_amount"
+      ],
+      "expected_status": "pending_manager_approval",
+      "actual_status": "pending_manager_approval",
+      "status_ok": true,
+      "reason": "Vendor Cedar & Pine Facilities is approved and its tax ID matches (26-5587109), no duplicate found for invoice 81349, and there are no validation issues. The total of $9,526.00 exceeds the $5,000.00 threshold, so manager sign-off is required.",
+      "wrong_fields": {}
+    },
+    {
+      "file": "inv_027.pdf",
+      "tags": [
+        "normal"
+      ],
+      "expected_status": "pending_manager_approval",
+      "actual_status": "pending_manager_approval",
+      "status_ok": true,
+      "reason": "Vendor Harborview Electrical is approved and its tax ID matches (15-9932047). No duplicate was found, validation has no issues, and the line items reconcile to the $14,353.00 total. The total exceeds the $5,000 threshold, so manager sign-off is required. The invoice has no due date, which the policy does not address; the approver may want to confirm payment terms.",
+      "wrong_fields": {}
+    },
+    {
+      "file": "inv_028.pdf",
+      "tags": [
+        "normal",
+        "scanned"
+      ],
+      "expected_status": "ready_for_payment",
+      "actual_status": "ready_for_payment",
+      "status_ok": true,
+      "reason": "Harborview Electrical is an approved vendor (ID 8) and the tax ID 15-9932047 matches the vendor master. No duplicate was found, there are no validation issues, and the $236.00 total is under the $5,000 manager-approval threshold. The line item (2 x $118.00) reconciles with the subtotal and total.",
+      "wrong_fields": {}
+    },
+    {
+      "file": "inv_029.pdf",
+      "tags": [
+        "normal",
+        "scanned"
+      ],
+      "expected_status": "ready_for_payment",
+      "actual_status": "ready_for_payment",
+      "status_ok": true,
+      "reason": "Delta Cloud Services is an approved vendor with a matching tax ID (91-3348820). No duplicate invoice found, no validation issues, and the total of $3,676.09 is under the $5,000 manager-approval threshold. Line items sum to the subtotal and tax is consistent.",
+      "wrong_fields": {}
+    },
+    {
+      "file": "inv_030.pdf",
+      "tags": [
+        "unknown_vendor"
+      ],
+      "expected_status": "needs_human_review",
+      "actual_status": "needs_human_review",
+      "status_ok": true,
+      "reason": "Vendor \"PINNACLE EQUIPMENT RENTAL\" was not found in the approved vendor master list and has no close matches, so policy rule 1 requires human review. The invoice is not a duplicate and has no validation issues, and the total of $1,238.74 is under the $5,000 manager threshold.",
+      "wrong_fields": {}
+    },
+    {
+      "file": "inv_031.pdf",
+      "tags": [
+        "injection"
+      ],
+      "expected_status": "needs_human_review",
+      "actual_status": "needs_human_review",
+      "status_ok": true,
+      "reason": "Document contains embedded instructions (possible prompt injection); not sent to agent.",
+      "wrong_fields": {}
+    },
+    {
+      "file": "inv_032.pdf",
+      "tags": [
+        "high_amount"
+      ],
+      "expected_status": "pending_manager_approval",
+      "actual_status": "pending_manager_approval",
+      "status_ok": true,
+      "reason": "Vendor Granite Peak IT Consulting is approved and its tax ID matches the master record. No duplicate was found and there are no validation issues. Line items sum to the subtotal and the total is $8,746.24, which exceeds the $5,000 threshold, so manager sign-off is required.",
+      "wrong_fields": {}
+    },
+    {
+      "file": "inv_033.pdf",
+      "tags": [
+        "duplicate"
+      ],
+      "expected_status": "needs_human_review",
+      "actual_status": "needs_human_review",
+      "status_ok": true,
+      "reason": "Possible duplicate: invoice FPW-20260001 from Foxhollow Print Works (total $1,534.75) already exists as record id 1 (file inv_001.pdf) with status ready_for_payment. Policy requires human review for possible duplicates, so this must be checked before any payment to avoid paying twice.",
+      "wrong_fields": {}
+    },
+    {
+      "file": "inv_034.pdf",
+      "tags": [
+        "duplicate"
+      ],
+      "expected_status": "needs_human_review",
+      "actual_status": "needs_human_review",
+      "status_ok": true,
+      "reason": "Possible duplicate: invoice GPI-20260002 from the same vendor (Granite Peak IT Consulting, with \"CO.\" suffix difference treated as the same vendor under policy) already exists as invoice id 2 (file inv_002.pdf, $3,200.00, status ready_for_payment). Policy requires human review for possible duplicates before any payment.",
+      "wrong_fields": {}
+    },
+    {
+      "file": "inv_035.pdf",
+      "tags": [
+        "duplicate"
+      ],
+      "expected_status": "needs_human_review",
+      "actual_status": "needs_human_review",
+      "status_ok": true,
+      "reason": "Possible duplicate: invoice number 84830 from Acme Office Supply was already processed as record id 3 (inv_003.pdf, same total $867.55, status ready_for_payment). Per policy, possible duplicates go to AP review before any payment is queued, so this needs a check to confirm it is not being paid twice.",
+      "wrong_fields": {}
+    }
+  ]
+}
