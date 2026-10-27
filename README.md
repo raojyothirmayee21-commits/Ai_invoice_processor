@@ -1,98 +1,106 @@
-# AP Invoice Processor
+# Invoice Processor
 
-An AI system that reads vendor invoices, extracts the data, checks it, and routes each invoice to the right place: **ready for payment**, **manager approval**, or **human review**. Built the way a forward deployed engineer would deploy it at a customer: PII masked before anything reaches the model, deterministic checks around the LLM, guardrails the model can't talk its way past, an audit trail, and an evaluation harness with real numbers.
+I'm a data engineer, and most of my work has been moving messy data from one place to another and making sure it's correct when it gets there. I wanted to see what that looks like when an LLM is part of the pipeline, so I picked a problem that every finance team has: vendor invoices.
 
-## The business problem
+This project reads invoices (PDFs and scans), pulls out the key fields with Claude, checks the numbers in plain Python, and decides where each invoice should go: straight to payment, to a manager for approval, or to a person for review.
 
-A mid-sized company receives ~2,000 invoices a month from 200 vendors, in every layout imaginable: digital PDFs, phone scans, different date formats, different labels for the same field. Today an AP team of five types each one into the ERP by hand. It's slow (5-7 days per invoice), error-prone (a misplaced zero becomes a wrong payment), and approvals get lost in email.
+## The problem
 
-This system automates the reading and the routine routing, and sends only the exceptions to people.
+Picture a company getting about 2,000 invoices a month from a couple hundred vendors. Every vendor uses a different layout. Some send clean PDFs, some send phone photos. Someone on the finance team opens each one and types the vendor, invoice number, date and amounts into the ERP by hand. It's slow, it's boring, and a single typo can mean paying the wrong amount.
+
+I wanted the routine invoices to go through automatically and only the weird ones to reach a person.
 
 ## How it works
 
 ```mermaid
 flowchart LR
-    A[AP mailbox / upload] --> B[Ingest<br/>text or page images]
-    B --> C[Mask PII<br/>bank acct, routing,<br/>email, phone]
-    C --> D[Claude extraction<br/>structured JSON output]
-    D --> E[Validation in code<br/>math, dates, required fields]
-    E --> F{Embedded<br/>instructions?}
+    A[Email inbox / upload] --> B[Read PDF<br/>or scan]
+    B --> C[Mask bank details,<br/>emails, phones]
+    C --> D[Claude extracts<br/>fields as JSON]
+    D --> E[Python checks<br/>the math and dates]
+    E --> F{Suspicious<br/>text?}
     F -- yes --> R[Human review]
-    F -- no --> G[Routing agent<br/>vendor lookup, duplicate check,<br/>policy]
-    G --> H{Guardrail<br/>re-checks policy}
+    F -- no --> G[Routing agent]
+    G --> H{Policy check<br/>in code}
     H --> P[Ready for payment]
     H --> M[Manager approval]
     H --> R
-    P & M & R --> DB[(SQLite + audit log)]
 ```
 
-| Step | What happens | Why |
-|---|---|---|
-| Ingest | Digital PDFs → text. Scans/photos → page images for Claude vision. | Text is cheaper and can be PII-masked; vision handles the rest. |
-| PII masking | Bank account, routing, card numbers, SSNs, emails and phones are redacted before the LLM call. | Data minimisation: the model doesn't need them. |
-| Extraction | Claude returns JSON constrained by a strict schema (structured outputs). Pydantic validates; one retry with the error on failure. | Structured output you can trust the shape of. |
-| Validation | Plain Python checks arithmetic, dates, missing fields; produces a confidence score. | The LLM reads, code verifies. Math is never trusted to the model. |
-| Routing agent | A small, cheap model uses tools (vendor master, duplicate check, policy) and picks one decision with a reason. | Handles fuzzy cases and writes an auditor-readable reason. |
-| Guardrails | `mark_ready_for_payment` re-derives every policy condition from source data and refuses if any fails. There is no "pay" tool at all. | The prompt asks; the code enforces. |
-| Human-in-the-loop | Review queue in the UI; every human decision needs a comment and is logged. | Money decisions stay with people. |
+1. **Read the file.** Digital PDFs give me text directly. If a PDF has almost no text, it's a scan, so I send the page images to Claude instead.
+2. **Mask sensitive data.** Before anything goes to the API, I strip out bank account numbers, routing numbers, emails and phone numbers. The model doesn't need them to do its job.
+3. **Extract.** Claude returns the fields as JSON that has to match a schema I defined. I validate it with Pydantic and retry once if something is off.
+4. **Check in code.** I don't trust the model with arithmetic. Python checks that line items add up, that subtotal plus tax equals the total, that dates make sense, and that required fields are there.
+5. **Route.** A small agent looks up the vendor, checks for duplicates, reads the approval policy, and picks one of three outcomes with a short reason.
+6. **Guardrail.** Even if the agent says "approve", the code re-checks every rule before an invoice is marked ready for payment. There's no tool that actually pays anyone.
 
-## Evaluation
+Anything that needs a person shows up in a review queue in the Streamlit app. Approving or rejecting needs a comment, and everything gets written to an audit log.
 
-`data/sample_invoices/` holds 35 synthetic invoices with ground truth, including edge cases on purpose:
+## Things I designed for
 
-| Case | Count | Expected outcome |
-|---|---|---|
-| Normal (3 layouts, 3 date formats, vendor name variants) | 18 | ready for payment / manager approval |
-| High amount (> $5,000) | 6 | manager approval |
-| Unknown vendor | 3 | human review |
-| Arithmetic error on the invoice | 3 | human review |
-| Duplicate re-sent in a different layout | 3 | human review |
-| Prompt injection hidden in pale footer text | 2 | human review (never reaches the agent) |
-| Scanned (image-only, tilted, noisy) | 2 | read via vision |
+- **Messy layouts.** The test set has three different invoice designs, three date formats, and vendor names that don't exactly match the vendor list ("Acme Office Supply, Inc." vs "Acme Office Supply").
+- **Scanned invoices.** Two are rotated, blurry, image-only PDFs.
+- **Duplicates.** The same invoice sent again in a different layout, so a file hash won't catch it. I match on vendor plus invoice number instead.
+- **Bad math.** Invoices where the printed total doesn't match the line items.
+- **Prompt injection.** Two invoices have pale text in the footer telling "the AI system" to approve them. Those never reach the agent; they go straight to a person.
 
-`python scripts/run_eval.py` runs the real pipeline and reports per-field accuracy, routing accuracy by case type, latency, tokens, and the number that matters most: **unsafe auto-approvals** (anything marked ready for payment that shouldn't have been; target 0).
+## Results
 
-> **Results:** run the eval with your API key and paste the table from `evals/results/latest.md` here.
+I evaluate on 35 synthetic invoices where I know the right answer for every field. The number I care about most is **unsafe auto-approvals**: invoices marked ready for payment that shouldn't have been. That needs to be zero.
 
-The offline test suite also runs the whole pipeline with an "oracle" extractor (perfect extraction) to prove the routing, validation and guardrails are correct on their own. That test caught a real bug: a percentage-based tolerance let a $45.50 arithmetic error slip through on a $9,000 invoice. Money is now compared to the cent.
+| Metric | Result |
+|---|---|
+| Invoices with every field correct | _add after full run_ |
+| Correct routing | _add after full run_ |
+| Unsafe auto-approvals | _add after full run_ |
+| Avg time per invoice | _add after full run_ |
 
-## Quick start
+Full per-field breakdown: [`evals/results/latest.md`](evals/results/latest.md)
+
+## What I learned from the evals
+
+The first real run looked bad: only 1 of 3 normal invoices was routed to payment. When I read the reasons, the model wasn't the problem.
+
+- On some layouts the invoice only shows "$", so Claude said it wasn't 100% sure the currency was USD. My code treated *any* uncertainty as a blocker. I split fields into critical ones (vendor, amounts, invoice number) that block approval and minor ones (due date, currency symbol) that just show a warning.
+- One layout prints "Net 15" instead of a due date. Claude correctly returned nothing, but my test label had a calculated date. My label was wrong, not the model.
+
+After those fixes, the same invoices went to 100% correct routing. Earlier, my unit tests also caught a validation bug: I was comparing money with a 0.5% tolerance, which let a $45.50 error slip through on a $9,000 invoice. Now amounts have to match to the cent.
+
+Separately, the newest Claude model rejected the way I was originally asking for JSON (forcing a tool call). I read the migration guide and switched to structured outputs. Because all the API calls live in one module, that was a one-file change.
+
+## Running it
 
 ```bash
-git clone <this repo> && cd invoice-processor
-python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
-cp .env.example .env            # add your ANTHROPIC_API_KEY
+pytest -q                               # offline tests, no API key needed
 
-pytest -q                       # 17 offline tests, no API key needed
-python scripts/run_eval.py --limit 5   # quick, cheap check against the real API
-python scripts/run_eval.py             # full eval (35 invoices)
-streamlit run app.py            # UI: process, review queue, eval dashboard, audit log
+export ANTHROPIC_API_KEY=sk-ant-...     # or use a .env file / Codespaces secret
+python scripts/run_eval.py --limit 5    # quick check
+python scripts/run_eval.py              # full eval, 35 invoices
+streamlit run app.py                    # the review UI
 ```
 
-Regenerate the dataset (different seed = different invoices): `python scripts/generate_invoices.py --seed 11`
-
-Process a folder on a schedule: `python scripts/process_inbox.py --inbox data/inbox` (add `--fetch-email` to pull from a dedicated AP mailbox over IMAP first).
+To generate a fresh set of test invoices: `python scripts/generate_invoices.py --seed 11`
 
 ## Project layout
 
 ```
 invoice_processor/
-  ingest.py        PDF/image loading, scanned-document detection
-  pii.py           redaction before the LLM call
-  extractor.py     Claude extraction with structured outputs + retry
-  validation.py    deterministic checks and confidence score
-  agent.py         routing agent, tools, code-level guardrails
-  pipeline.py      end-to-end processing of one file / a folder
-  db.py            SQLite: vendors, invoices, approvals, audit log
-  email_ingest.py  IMAP pull from a dedicated AP mailbox with sender allowlist
-  evaluation.py    scoring against ground truth
-scripts/           generate data, run eval, process inbox
-app.py             Streamlit UI
-tests/             offline tests with a fake Anthropic client
-docs/DESIGN.md     every design decision, trade-offs, and interview Q&A
+  ingest.py         reading PDFs and scans
+  pii.py            masking sensitive data
+  extractor.py      Claude extraction
+  validation.py     math, date and field checks
+  agent.py          routing agent and the policy guardrail
+  pipeline.py       runs one invoice end to end
+  db.py             SQLite: vendors, invoices, approvals, audit log
+  email_ingest.py   pulls attachments from a shared AP mailbox
+  evaluation.py     scores results against the answer key
+scripts/            data generator, eval runner, batch processor
+app.py              Streamlit UI
+tests/              offline tests using a fake Claude client
+docs/DESIGN.md      why I made each design choice
 ```
 
-## Taking it to production
+## If I were deploying this for a real company
 
-What I'd change for a real customer, roughly in order: move SQLite to the customer's warehouse/Postgres; post approved invoices to the ERP (SAP/NetSuite) via its API; run the model through the customer's cloud (Bedrock/Vertex) if data residency requires it; add three-way matching against purchase orders and receipts; replace regex PII masking with a dedicated detector; and run the eval in CI on every prompt or model change. Details in [docs/DESIGN.md](docs/DESIGN.md).
+I'd start by labelling 100–200 of their actual invoices and running the same eval on those, because synthetic data is always cleaner than reality. Then: connect to their ERP for the vendor list and purchase orders, add three-way matching (invoice vs PO vs receipt), swap the regex masking for a proper PII detector, and run in shadow mode for a few weeks, where the system makes a decision but a person still does the work, before letting it route anything on its own.
