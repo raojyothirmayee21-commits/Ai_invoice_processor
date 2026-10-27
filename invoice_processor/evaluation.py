@@ -42,17 +42,19 @@ def field_matches(name: str, expected, actual) -> bool:
 
 
 def run_evaluation(client, dataset_dir: str | Path, settings: Settings, limit: int | None = None,
-                   today: date | None = None) -> dict:
+                   today: date | None = None, store: Store | None = None) -> dict:
     dataset_dir = Path(dataset_dir)
     truth = json.loads((dataset_dir / "ground_truth.json").read_text())
     if limit:
         truth = truth[:limit]
 
     # Fresh in-memory DB each run so results are reproducible and duplicates are
-    # detected only within the dataset, in file order.
-    store = Store(":memory:")
-    store.seed_vendors(settings.vendors_csv)
-    settings = replace(settings, db_path=Path(":memory:"))
+    # detected only within the dataset, in file order. (build_demo_db passes a real
+    # file-backed store so the same run also produces the demo database.)
+    if store is None:
+        store = Store(":memory:")
+        store.seed_vendors(settings.vendors_csv)
+        settings = replace(settings, db_path=Path(":memory:"))
 
     per_field = defaultdict(lambda: [0, 0])  # name -> [correct, total]
     status_pairs, failures, rows = [], [], []

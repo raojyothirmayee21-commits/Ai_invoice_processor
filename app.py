@@ -6,6 +6,8 @@ Run:  streamlit run app.py
 from __future__ import annotations
 
 import json
+import shutil
+import tempfile
 from pathlib import Path
 
 import pandas as pd
@@ -28,11 +30,7 @@ STATUS_LABEL = {
 }
 
 
-@st.cache_resource
-def get_store() -> Store:
-    store = Store(settings.db_path)
-    store.seed_vendors(settings.vendors_csv)
-    return store
+DEMO_DB = ROOT / "data" / "demo.db"
 
 
 @st.cache_resource
@@ -43,11 +41,37 @@ def client_or_none():
         return None
 
 
-store, client = get_store(), client_or_none()
+@st.cache_resource
+def shared_store() -> Store:
+    store = Store(settings.db_path)
+    store.seed_vendors(settings.vendors_csv)
+    return store
+
+
+def demo_store() -> Store:
+    # Each visitor gets a private copy of the demo database, so their approve/reject
+    # clicks never change what the next visitor sees.
+    if "demo_store" not in st.session_state:
+        tmp = Path(tempfile.mkdtemp()) / "demo.db"
+        shutil.copy(DEMO_DB, tmp)
+        st.session_state.demo_store = Store(tmp)
+    return st.session_state.demo_store
+
+
+client = client_or_none()
+DEMO_MODE = client is None and DEMO_DB.exists()
+store = demo_store() if DEMO_MODE else shared_store()
 
 st.title("🧾 AP Invoice Processor")
 st.caption("Invoices in → PII masked → Claude extracts → code validates → agent routes → humans decide the edge cases.")
-if client is None:
+if DEMO_MODE:
+    st.info(
+        "**Demo mode.** These are real Claude results for the 35 sample invoices, processed ahead of time, "
+        "so browsing this page makes no API calls. Try the **Review queue**: approve or reject an invoice "
+        "and see it in the **Audit log**. Your changes reset when you leave. "
+        "[Code on GitHub](https://github.com/raojyothirmayee21-commits/new-processor)"
+    )
+elif client is None:
     st.warning("No ANTHROPIC_API_KEY found. Add it to `.env` to process invoices; browsing works without it.")
 
 
@@ -97,6 +121,9 @@ with tab_process:
     uploads = st.file_uploader("PDF or image", type=["pdf", "png", "jpg", "jpeg"], accept_multiple_files=True)
     sample_dir = ROOT / "data" / "sample_invoices"
     use_samples = st.checkbox(f"Or process the {len(list(sample_dir.glob('*.pdf')))} bundled sample invoices")
+    if DEMO_MODE:
+        st.caption("Processing new invoices is turned off in the demo, since it would call the Claude API. "
+                   "Clone the repo and add your own key to try it.")
     if st.button("Process", type="primary", disabled=client is None):
         paths: list[Path] = []
         if uploads:

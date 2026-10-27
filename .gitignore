@@ -3,6 +3,7 @@ __pycache__/
 *.pyc
 .pytest_cache/
 data/*.db
+!data/demo.db
 data/inbox/
 evals/results/2*.json
 evals/results/2*.md
