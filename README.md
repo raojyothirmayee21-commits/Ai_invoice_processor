@@ -50,10 +50,14 @@ I evaluate on 35 synthetic invoices where I know the right answer for every fiel
 
 | Metric | Result |
 |---|---|
-| Invoices with every field correct | _add after full run_ |
-| Correct routing | _add after full run_ |
-| Unsafe auto-approvals | _add after full run_ |
-| Avg time per invoice | _add after full run_ |
+| Invoices with every field correct | 35 / 35 (100%) |
+| Correct routing | 35 / 35 (100%) |
+| Unsafe auto-approvals | 0 |
+| Avg extraction time per invoice | 2.4 s |
+
+That includes the hard cases: both scanned invoices, both prompt-injection attempts, all three duplicates and all three unknown vendors were routed correctly. Models: `claude-sonnet-5-5` for extraction, `claude-haiku-5-5` for routing.
+
+To be honest about what this means: my test invoices are synthetic, so they're cleaner than real ones. 100% here tells me the pipeline and the checks work end to end; it doesn't mean it would be 100% on a real company's invoices. Handwritten notes, multi-page invoices, foreign currencies and really bad phone photos would all push the numbers down, and that's what I'd test next.
 
 Full per-field breakdown: [`evals/results/latest.md`](evals/results/latest.md)
 
