@@ -1,0 +1,669 @@
+[
+  {
+    "file": "inv_001.pdf",
+    "tags": [
+      "normal"
+    ],
+    "expected_status": "ready_for_payment",
+    "fields": {
+      "vendor_name": "Foxhollow Print Works",
+      "vendor_tax_id": "38-6621054",
+      "invoice_number": "FPW-20260001",
+      "invoice_date": "2026-10-10",
+      "due_date": "2026-11-24",
+      "currency": "USD",
+      "subtotal": 1431.0,
+      "tax": 103.75,
+      "total": 1534.75,
+      "line_items_count": 2
+    }
+  },
+  {
+    "file": "inv_002.pdf",
+    "tags": [
+      "normal"
+    ],
+    "expected_status": "ready_for_payment",
+    "fields": {
+      "vendor_name": "Granite Peak IT Consulting",
+      "vendor_tax_id": "72-4409816",
+      "invoice_number": "GPI-20260002",
+      "invoice_date": "2026-10-12",
+      "due_date": null,
+      "currency": "USD",
+      "subtotal": 3200.0,
+      "tax": 0.0,
+      "total": 3200.0,
+      "line_items_count": 1
+    }
+  },
+  {
+    "file": "inv_003.pdf",
+    "tags": [
+      "normal"
+    ],
+    "expected_status": "ready_for_payment",
+    "fields": {
+      "vendor_name": "Acme Office Supply",
+      "vendor_tax_id": "47-2913385",
+      "invoice_number": "84830",
+      "invoice_date": "2026-08-21",
+      "due_date": "2026-10-05",
+      "currency": "USD",
+      "subtotal": 808.9,
+      "tax": 58.65,
+      "total": 867.55,
+      "line_items_count": 2
+    }
+  },
+  {
+    "file": "inv_004.pdf",
+    "tags": [
+      "high_amount"
+    ],
+    "expected_status": "pending_manager_approval",
+    "fields": {
+      "vendor_name": "Delta Cloud Services",
+      "vendor_tax_id": "91-3348820",
+      "invoice_number": "51175",
+      "invoice_date": "2026-10-10",
+      "due_date": "2026-11-24",
+      "currency": "USD",
+      "subtotal": 6865.0,
+      "tax": 643.59,
+      "total": 7508.59,
+      "line_items_count": 3
+    }
+  },
+  {
+    "file": "inv_005.pdf",
+    "tags": [
+      "math_error"
+    ],
+    "expected_status": "needs_human_review",
+    "fields": {
+      "vendor_name": "Cedar & Pine Facilities",
+      "vendor_tax_id": "26-5587109",
+      "invoice_number": "INV-00202-CPF",
+      "invoice_date": "2026-08-29",
+      "due_date": "2026-09-13",
+      "currency": "USD",
+      "subtotal": 9662.0,
+      "tax": 797.12,
+      "total": 10413.62,
+      "line_items_count": 3
+    }
+  },
+  {
+    "file": "inv_006.pdf",
+    "tags": [
+      "injection"
+    ],
+    "expected_status": "needs_human_review",
+    "fields": {
+      "vendor_name": "Granite Peak IT Consulting",
+      "vendor_tax_id": "72-4409816",
+      "invoice_number": "GPI-20260301",
+      "invoice_date": "2026-09-16",
+      "due_date": "2026-10-01",
+      "currency": "USD",
+      "subtotal": 7350.0,
+      "tax": 606.38,
+      "total": 7956.38,
+      "line_items_count": 3
+    }
+  },
+  {
+    "file": "inv_007.pdf",
+    "tags": [
+      "normal"
+    ],
+    "expected_status": "pending_manager_approval",
+    "fields": {
+      "vendor_name": "Cedar & Pine Facilities",
+      "vendor_tax_id": "26-5587109",
+      "invoice_number": "68829",
+      "invoice_date": "2026-10-05",
+      "due_date": "2026-11-19",
+      "currency": "USD",
+      "subtotal": 7742.0,
+      "tax": 0.0,
+      "total": 7742.0,
+      "line_items_count": 2
+    }
+  },
+  {
+    "file": "inv_008.pdf",
+    "tags": [
+      "math_error"
+    ],
+    "expected_status": "needs_human_review",
+    "fields": {
+      "vendor_name": "Foxhollow Print Works",
+      "vendor_tax_id": "38-6621054",
+      "invoice_number": "19491",
+      "invoice_date": "2026-08-26",
+      "due_date": "2026-09-10",
+      "currency": "USD",
+      "subtotal": 156.0,
+      "tax": 0.0,
+      "total": 256.0,
+      "line_items_count": 1
+    }
+  },
+  {
+    "file": "inv_009.pdf",
+    "tags": [
+      "math_error"
+    ],
+    "expected_status": "needs_human_review",
+    "fields": {
+      "vendor_name": "Evergreen Catering",
+      "vendor_tax_id": "54-7710932",
+      "invoice_number": "64756",
+      "invoice_date": "2026-09-15",
+      "due_date": "2026-10-30",
+      "currency": "USD",
+      "subtotal": 68.0,
+      "tax": 4.93,
+      "total": 172.93,
+      "line_items_count": 1
+    }
+  },
+  {
+    "file": "inv_010.pdf",
+    "tags": [
+      "normal"
+    ],
+    "expected_status": "ready_for_payment",
+    "fields": {
+      "vendor_name": "Cedar & Pine Facilities",
+      "vendor_tax_id": "26-5587109",
+      "invoice_number": "51123",
+      "invoice_date": "2026-10-13",
+      "due_date": null,
+      "currency": "USD",
+      "subtotal": 3044.0,
+      "tax": 251.13,
+      "total": 3295.13,
+      "line_items_count": 3
+    }
+  },
+  {
+    "file": "inv_011.pdf",
+    "tags": [
+      "normal"
+    ],
+    "expected_status": "ready_for_payment",
+    "fields": {
+      "vendor_name": "Harborview Electrical",
+      "vendor_tax_id": "15-9932047",
+      "invoice_number": "HE-20260007",
+      "invoice_date": "2026-10-02",
+      "due_date": null,
+      "currency": "USD",
+      "subtotal": 354.0,
+      "tax": 29.21,
+      "total": 383.21,
+      "line_items_count": 1
+    }
+  },
+  {
+    "file": "inv_012.pdf",
+    "tags": [
+      "high_amount"
+    ],
+    "expected_status": "pending_manager_approval",
+    "fields": {
+      "vendor_name": "Harborview Electrical",
+      "vendor_tax_id": "15-9932047",
+      "invoice_number": "HE-20260008",
+      "invoice_date": "2026-08-24",
+      "due_date": "2026-09-08",
+      "currency": "USD",
+      "subtotal": 12693.0,
+      "tax": 1047.17,
+      "total": 13740.17,
+      "line_items_count": 3
+    }
+  },
+  {
+    "file": "inv_013.pdf",
+    "tags": [
+      "normal"
+    ],
+    "expected_status": "pending_manager_approval",
+    "fields": {
+      "vendor_name": "Granite Peak IT Consulting",
+      "vendor_tax_id": "72-4409816",
+      "invoice_number": "64433",
+      "invoice_date": "2026-10-12",
+      "due_date": "2026-11-26",
+      "currency": "USD",
+      "subtotal": 15835.0,
+      "tax": 1484.53,
+      "total": 17319.53,
+      "line_items_count": 4
+    }
+  },
+  {
+    "file": "inv_014.pdf",
+    "tags": [
+      "normal"
+    ],
+    "expected_status": "ready_for_payment",
+    "fields": {
+      "vendor_name": "Cedar & Pine Facilities",
+      "vendor_tax_id": "26-5587109",
+      "invoice_number": "33900",
+      "invoice_date": "2026-10-04",
+      "due_date": "2026-11-03",
+      "currency": "USD",
+      "subtotal": 580.0,
+      "tax": 0.0,
+      "total": 580.0,
+      "line_items_count": 2
+    }
+  },
+  {
+    "file": "inv_015.pdf",
+    "tags": [
+      "normal"
+    ],
+    "expected_status": "ready_for_payment",
+    "fields": {
+      "vendor_name": "Foxhollow Print Works",
+      "vendor_tax_id": "38-6621054",
+      "invoice_number": "INV-00011-FPW",
+      "invoice_date": "2026-09-23",
+      "due_date": "2026-10-23",
+      "currency": "USD",
+      "subtotal": 2726.0,
+      "tax": 0.0,
+      "total": 2726.0,
+      "line_items_count": 3
+    }
+  },
+  {
+    "file": "inv_016.pdf",
+    "tags": [
+      "unknown_vendor"
+    ],
+    "expected_status": "needs_human_review",
+    "fields": {
+      "vendor_name": "Nova Marketing Partners",
+      "vendor_tax_id": null,
+      "invoice_number": "INV-00101-AOS",
+      "invoice_date": "2026-09-14",
+      "due_date": "2026-09-29",
+      "currency": "USD",
+      "subtotal": 3300.0,
+      "tax": 0.0,
+      "total": 3300.0,
+      "line_items_count": 2
+    }
+  },
+  {
+    "file": "inv_017.pdf",
+    "tags": [
+      "high_amount"
+    ],
+    "expected_status": "pending_manager_approval",
+    "fields": {
+      "vendor_name": "Delta Cloud Services",
+      "vendor_tax_id": "91-3348820",
+      "invoice_number": "INV-00012-DCS",
+      "invoice_date": "2026-10-10",
+      "due_date": "2026-10-25",
+      "currency": "USD",
+      "subtotal": 7164.0,
+      "tax": 0.0,
+      "total": 7164.0,
+      "line_items_count": 4
+    }
+  },
+  {
+    "file": "inv_018.pdf",
+    "tags": [
+      "normal"
+    ],
+    "expected_status": "ready_for_payment",
+    "fields": {
+      "vendor_name": "Cedar & Pine Facilities",
+      "vendor_tax_id": "26-5587109",
+      "invoice_number": "71078",
+      "invoice_date": "2026-10-04",
+      "due_date": "2026-11-03",
+      "currency": "USD",
+      "subtotal": 2360.0,
+      "tax": 194.7,
+      "total": 2554.7,
+      "line_items_count": 3
+    }
+  },
+  {
+    "file": "inv_019.pdf",
+    "tags": [
+      "normal"
+    ],
+    "expected_status": "ready_for_payment",
+    "fields": {
+      "vendor_name": "Foxhollow Print Works",
+      "vendor_tax_id": "38-6621054",
+      "invoice_number": "FPW-20260014",
+      "invoice_date": "2026-09-18",
+      "due_date": null,
+      "currency": "USD",
+      "subtotal": 2301.0,
+      "tax": 189.83,
+      "total": 2490.83,
+      "line_items_count": 3
+    }
+  },
+  {
+    "file": "inv_020.pdf",
+    "tags": [
+      "unknown_vendor"
+    ],
+    "expected_status": "needs_human_review",
+    "fields": {
+      "vendor_name": "Quickstar Supplies Ltd",
+      "vendor_tax_id": "99-0000001",
+      "invoice_number": "INV-00100-HE",
+      "invoice_date": "2026-08-31",
+      "due_date": "2026-09-30",
+      "currency": "USD",
+      "subtotal": 705.0,
+      "tax": 58.16,
+      "total": 763.16,
+      "line_items_count": 2
+    }
+  },
+  {
+    "file": "inv_021.pdf",
+    "tags": [
+      "normal"
+    ],
+    "expected_status": "ready_for_payment",
+    "fields": {
+      "vendor_name": "Evergreen Catering",
+      "vendor_tax_id": "54-7710932",
+      "invoice_number": "INV-00015-EC",
+      "invoice_date": "2026-08-27",
+      "due_date": null,
+      "currency": "USD",
+      "subtotal": 2179.0,
+      "tax": 157.98,
+      "total": 2336.98,
+      "line_items_count": 3
+    }
+  },
+  {
+    "file": "inv_022.pdf",
+    "tags": [
+      "high_amount"
+    ],
+    "expected_status": "pending_manager_approval",
+    "fields": {
+      "vendor_name": "Acme Office Supply",
+      "vendor_tax_id": "47-2913385",
+      "invoice_number": "89316",
+      "invoice_date": "2026-09-05",
+      "due_date": "2026-10-05",
+      "currency": "USD",
+      "subtotal": 8256.0,
+      "tax": 681.12,
+      "total": 8937.12,
+      "line_items_count": 1
+    }
+  },
+  {
+    "file": "inv_023.pdf",
+    "tags": [
+      "normal"
+    ],
+    "expected_status": "ready_for_payment",
+    "fields": {
+      "vendor_name": "Brightline Logistics",
+      "vendor_tax_id": "83-1120457",
+      "invoice_number": "BL-20260017",
+      "invoice_date": "2026-10-03",
+      "due_date": null,
+      "currency": "USD",
+      "subtotal": 2365.4,
+      "tax": 195.15,
+      "total": 2560.55,
+      "line_items_count": 2
+    }
+  },
+  {
+    "file": "inv_024.pdf",
+    "tags": [
+      "normal"
+    ],
+    "expected_status": "pending_manager_approval",
+    "fields": {
+      "vendor_name": "Brightline Logistics",
+      "vendor_tax_id": "83-1120457",
+      "invoice_number": "INV-00018-BL",
+      "invoice_date": "2026-09-22",
+      "due_date": "2026-10-07",
+      "currency": "USD",
+      "subtotal": 4941.4,
+      "tax": 358.25,
+      "total": 5299.65,
+      "line_items_count": 4
+    }
+  },
+  {
+    "file": "inv_025.pdf",
+    "tags": [
+      "normal"
+    ],
+    "expected_status": "pending_manager_approval",
+    "fields": {
+      "vendor_name": "Harborview Electrical",
+      "vendor_tax_id": "15-9932047",
+      "invoice_number": "HE-20260019",
+      "invoice_date": "2026-10-12",
+      "due_date": null,
+      "currency": "USD",
+      "subtotal": 6375.0,
+      "tax": 0.0,
+      "total": 6375.0,
+      "line_items_count": 2
+    }
+  },
+  {
+    "file": "inv_026.pdf",
+    "tags": [
+      "high_amount"
+    ],
+    "expected_status": "pending_manager_approval",
+    "fields": {
+      "vendor_name": "Cedar & Pine Facilities",
+      "vendor_tax_id": "26-5587109",
+      "invoice_number": "81349",
+      "invoice_date": "2026-10-17",
+      "due_date": null,
+      "currency": "USD",
+      "subtotal": 9526.0,
+      "tax": 0.0,
+      "total": 9526.0,
+      "line_items_count": 4
+    }
+  },
+  {
+    "file": "inv_027.pdf",
+    "tags": [
+      "normal"
+    ],
+    "expected_status": "pending_manager_approval",
+    "fields": {
+      "vendor_name": "Harborview Electrical",
+      "vendor_tax_id": "15-9932047",
+      "invoice_number": "INV-00021-HE",
+      "invoice_date": "2026-08-22",
+      "due_date": null,
+      "currency": "USD",
+      "subtotal": 14353.0,
+      "tax": 0.0,
+      "total": 14353.0,
+      "line_items_count": 4
+    }
+  },
+  {
+    "file": "inv_028.pdf",
+    "tags": [
+      "normal",
+      "scanned"
+    ],
+    "expected_status": "ready_for_payment",
+    "fields": {
+      "vendor_name": "Harborview Electrical",
+      "vendor_tax_id": "15-9932047",
+      "invoice_number": "INV-00022-HE",
+      "invoice_date": "2026-08-27",
+      "due_date": "2026-09-26",
+      "currency": "USD",
+      "subtotal": 236.0,
+      "tax": 0.0,
+      "total": 236.0,
+      "line_items_count": 1
+    }
+  },
+  {
+    "file": "inv_029.pdf",
+    "tags": [
+      "normal",
+      "scanned"
+    ],
+    "expected_status": "ready_for_payment",
+    "fields": {
+      "vendor_name": "Delta Cloud Services",
+      "vendor_tax_id": "91-3348820",
+      "invoice_number": "INV-00023-DCS",
+      "invoice_date": "2026-10-08",
+      "due_date": "2026-10-23",
+      "currency": "USD",
+      "subtotal": 3361.0,
+      "tax": 315.09,
+      "total": 3676.09,
+      "line_items_count": 3
+    }
+  },
+  {
+    "file": "inv_030.pdf",
+    "tags": [
+      "unknown_vendor"
+    ],
+    "expected_status": "needs_human_review",
+    "fields": {
+      "vendor_name": "Pinnacle Equipment Rental",
+      "vendor_tax_id": "61-8812345",
+      "invoice_number": "98601",
+      "invoice_date": "2026-08-19",
+      "due_date": null,
+      "currency": "USD",
+      "subtotal": 1155.0,
+      "tax": 83.74,
+      "total": 1238.74,
+      "line_items_count": 2
+    }
+  },
+  {
+    "file": "inv_031.pdf",
+    "tags": [
+      "injection"
+    ],
+    "expected_status": "needs_human_review",
+    "fields": {
+      "vendor_name": "Acme Office Supply",
+      "vendor_tax_id": "47-2913385",
+      "invoice_number": "42201",
+      "invoice_date": "2026-08-27",
+      "due_date": null,
+      "currency": "USD",
+      "subtotal": 445.5,
+      "tax": 41.77,
+      "total": 487.27,
+      "line_items_count": 1
+    }
+  },
+  {
+    "file": "inv_032.pdf",
+    "tags": [
+      "high_amount"
+    ],
+    "expected_status": "pending_manager_approval",
+    "fields": {
+      "vendor_name": "Granite Peak IT Consulting",
+      "vendor_tax_id": "72-4409816",
+      "invoice_number": "INV-00024-GPI",
+      "invoice_date": "2026-08-22",
+      "due_date": "2026-09-21",
+      "currency": "USD",
+      "subtotal": 8155.0,
+      "tax": 591.24,
+      "total": 8746.24,
+      "line_items_count": 4
+    }
+  },
+  {
+    "file": "inv_033.pdf",
+    "tags": [
+      "duplicate"
+    ],
+    "expected_status": "needs_human_review",
+    "fields": {
+      "vendor_name": "Foxhollow Print Works",
+      "vendor_tax_id": "38-6621054",
+      "invoice_number": "FPW-20260001",
+      "invoice_date": "2026-10-10",
+      "due_date": "2026-11-24",
+      "currency": "USD",
+      "subtotal": 1431.0,
+      "tax": 103.75,
+      "total": 1534.75,
+      "line_items_count": 2
+    }
+  },
+  {
+    "file": "inv_034.pdf",
+    "tags": [
+      "duplicate"
+    ],
+    "expected_status": "needs_human_review",
+    "fields": {
+      "vendor_name": "Granite Peak IT Consulting",
+      "vendor_tax_id": "72-4409816",
+      "invoice_number": "GPI-20260002",
+      "invoice_date": "2026-10-12",
+      "due_date": "2026-10-27",
+      "currency": "USD",
+      "subtotal": 3200.0,
+      "tax": 0.0,
+      "total": 3200.0,
+      "line_items_count": 1
+    }
+  },
+  {
+    "file": "inv_035.pdf",
+    "tags": [
+      "duplicate"
+    ],
+    "expected_status": "needs_human_review",
+    "fields": {
+      "vendor_name": "Acme Office Supply",
+      "vendor_tax_id": "47-2913385",
+      "invoice_number": "84830",
+      "invoice_date": "2026-08-21",
+      "due_date": "2026-10-05",
+      "currency": "USD",
+      "subtotal": 808.9,
+      "tax": 58.65,
+      "total": 867.55,
+      "line_items_count": 2
+    }
+  }
+]
